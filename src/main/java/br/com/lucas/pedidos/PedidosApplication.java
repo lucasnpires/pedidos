@@ -14,6 +14,7 @@ import br.com.lucas.pedidos.domain.Cidade;
 import br.com.lucas.pedidos.domain.Cliente;
 import br.com.lucas.pedidos.domain.Endereco;
 import br.com.lucas.pedidos.domain.Estado;
+import br.com.lucas.pedidos.domain.ItemPedido;
 import br.com.lucas.pedidos.domain.Pagamento;
 import br.com.lucas.pedidos.domain.PagamentoComBoleto;
 import br.com.lucas.pedidos.domain.PagamentoComCartoes;
@@ -26,6 +27,7 @@ import br.com.lucas.pedidos.repositories.CidadeRepository;
 import br.com.lucas.pedidos.repositories.ClienteRepository;
 import br.com.lucas.pedidos.repositories.EnderecoRepository;
 import br.com.lucas.pedidos.repositories.EstadoRepository;
+import br.com.lucas.pedidos.repositories.ItemPedidoRepository;
 import br.com.lucas.pedidos.repositories.PagamentoRepository;
 import br.com.lucas.pedidos.repositories.PedidoRepository;
 import br.com.lucas.pedidos.repositories.ProdutoRepository;
@@ -49,6 +51,9 @@ public class PedidosApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
 	
 	
 	
@@ -115,5 +120,19 @@ public class PedidosApplication implements CommandLineRunner {
 		
 		pedidoRepository.save(Arrays.asList(ped1, ped2));
 		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, new BigDecimal(0.00D), 1, new BigDecimal(2000.00D));
+		ItemPedido ip2 = new ItemPedido(ped1, p3, new BigDecimal(0.00D), 2, new BigDecimal(80.00D));
+		ItemPedido ip3 = new ItemPedido(ped2, p2, new BigDecimal(100.00D), 1, new BigDecimal(800.00D));
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
+		
 	}
 }
