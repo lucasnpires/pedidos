@@ -20,4 +20,9 @@ public class CategoriaService {
 		}
 		return obj;
 	}
+	
+	public Categoria salvar(Categoria obj) {
+		obj.setId(null);
+		return catRepo.save(obj);
+	}
 }
