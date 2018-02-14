@@ -1,10 +1,12 @@
 package br.com.lucas.pedidos.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.lucas.pedidos.domain.Categoria;
 import br.com.lucas.pedidos.repositories.CategoriaRepository;
+import br.com.lucas.pedidos.services.exception.DataIntegrityException;
 import br.com.lucas.pedidos.services.exception.ObjectNotFoundException;
 
 @Service
@@ -29,5 +31,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		this.find(obj.getId());
 		return catRepo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		this.find(id);
+		try {
+			catRepo.delete(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma Categoria que possui produtos");
+		}
 	}
 }
