@@ -19,10 +19,10 @@ import br.com.lucas.pedidos.services.exception.ObjectNotFoundException;
 public class CategoriaService {
 	
 	@Autowired
-	private CategoriaRepository catRepo;
+	private CategoriaRepository repo;
 	
 	public Categoria find(Integer id) {
-		Categoria obj = this.catRepo.findOne(id);
+		Categoria obj = this.repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado. Id: "+id + ", Tipo: "+Categoria.class.getName());			
 		}
@@ -31,30 +31,30 @@ public class CategoriaService {
 	
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
-		return catRepo.save(obj);
+		return repo.save(obj);
 	}
 	
 	public Categoria update(Categoria obj) {
 		this.find(obj.getId());
-		return catRepo.save(obj);
+		return repo.save(obj);
 	}
 	
 	public void delete(Integer id) {
 		this.find(id);
 		try {
-			catRepo.delete(id);
+			repo.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma Categoria que possui produtos");
 		}
 	}
 	
 	public List<Categoria> findAll(){
-		return catRepo.findAll();
+		return repo.findAll();
 	}
 	
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return catRepo.findAll(pageRequest);
+		return repo.findAll(pageRequest);
 	}
 	
 	public Categoria fromDTO(CategoriaDTO objDTO)  {

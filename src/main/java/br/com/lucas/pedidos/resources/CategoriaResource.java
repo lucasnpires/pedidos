@@ -26,18 +26,18 @@ import br.com.lucas.pedidos.services.CategoriaService;
 public class CategoriaResource {
 	
 	@Autowired
-	private CategoriaService catService;
+	private CategoriaService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
-		Categoria obj = catService.find(id);
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){
-		Categoria obj = catService.fromDTO(objDTO);
-		obj = catService.insert(obj);
+		Categoria obj = service.fromDTO(objDTO);
+		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
@@ -48,21 +48,21 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){
-		Categoria obj = catService.fromDTO(objDTO);
+		Categoria obj = service.fromDTO(objDTO);
 		obj.setId(id);
-		obj = catService.update(obj);
+		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Categoria> delete(@PathVariable Integer id) {
-		catService.delete(id);
+		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria> list = catService.findAll();
+		List<Categoria> list = service.findAll();
 		List<CategoriaDTO> listDto = list
 										.stream()
 										.map(obj -> new CategoriaDTO(obj))
@@ -78,7 +78,7 @@ public class CategoriaResource {
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 		
-		Page<Categoria> list = catService.findPage(page, linesPerPage, orderBy, direction);
+		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		
 		return ResponseEntity.ok().body(listDto);
