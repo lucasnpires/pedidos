@@ -1,0 +1,13 @@
+{
+	"nome" : "João da Silva",
+	"email" : "joao@gmail.com",
+	"cpfOuCnpj": "034541541",
+	"tipo": 1,
+	"logradouro" : "Rua das Acácias",
+	"numero" : "345",
+	"complemento" : "Apto 113",
+	"bairro" : "Portal dos Ipês",
+	"cep" : "07790890",
+	"telefone1": "996545412",
+	"cidadeId" : 2
+}
